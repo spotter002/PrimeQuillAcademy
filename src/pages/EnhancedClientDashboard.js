@@ -29,7 +29,7 @@ const EnhancedClientDashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/applications/${applicationId}/status`,
+        `https://primequillacademy.onrender.com/api/applications/${applicationId}/status`,
         { status: action },
         {
           headers: {
@@ -71,7 +71,7 @@ const EnhancedClientDashboard = () => {
         };
         
         // Fetch jobs first
-        const jobsRes = await axios.get('http://localhost:5000/api/jobs', config);
+        const jobsRes = await axios.get('https://primequillacademy.onrender.com/api/jobs', config);
         const userJobs = jobsRes.data.jobs?.filter(job => job.clientId === user.id) || [];
         setJobs(userJobs);
         
@@ -98,7 +98,7 @@ const EnhancedClientDashboard = () => {
         const jobIds = userJobs.map(job => job._id);
         if (jobIds.length > 0) {
           const appsPromises = jobIds.map(jobId => 
-            axios.get(`http://localhost:5000/api/applications/${jobId}/applications`, config).catch(() => ({ data: { applications: [] } }))
+            axios.get(`https://primequillacademy.onrender.com/api/applications/${jobId}/applications`, config).catch(() => ({ data: { applications: [] } }))
           );
           const appsResults = await Promise.all(appsPromises);
           const allApps = appsResults.flatMap(res => res.data.applications || []);

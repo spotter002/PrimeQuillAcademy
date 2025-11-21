@@ -21,7 +21,7 @@ const NewLanding = () => {
   useEffect(() => {
     const fetchFeaturedJobs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/jobs/featured');
+        const response = await axios.get('https://primequillacademy.onrender.com/api/jobs/featured');
         setFeaturedJobs(response.data);
       } catch (error) {
         console.error('Failed to fetch featured jobs:', error);
@@ -34,7 +34,7 @@ const NewLanding = () => {
     if (activeQuoteTab === 'essay' && essayForm.pages && essayForm.academicLevel && essayForm.deadline) {
       const calculatePrice = async () => {
         try {
-          const response = await axios.post('http://localhost:5000/api/tools/price-calculator', {
+          const response = await axios.post('https://primequillacademy.onrender.com/api/tools/price-calculator', {
             pages: parseInt(essayForm.pages) || 1,
             academicLevel: essayForm.academicLevel,
             deadline: parseInt(essayForm.deadline) || 24,

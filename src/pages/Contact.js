@@ -8,7 +8,7 @@ const Contact = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://localhost:5000/api/contact/send-email', {
+      const response = await fetch('https://primequillacademy.onrender.com/api/contact/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

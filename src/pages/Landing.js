@@ -29,7 +29,7 @@ const Landing = () => {
     const fetchFeaturedJobs = async () => {
       try {
         console.log('Fetching featured jobs...');
-        const response = await axios.get('http://localhost:5000/api/jobs/featured');
+        const response = await axios.get('https://primequillacademy.onrender.com/api/jobs/featured');
         console.log('Featured jobs response:', response.data);
         setFeaturedJobs(response.data);
       } catch (error) {

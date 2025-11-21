@@ -6,7 +6,7 @@ const useSocket = (user) => {
 
   useEffect(() => {
     if (user) {
-      socketRef.current = io('http://localhost:5000');
+      socketRef.current = io('https://primequillacademy.onrender.com');
       
       socketRef.current.emit('user-connected', {
         userId: user.id || user._id,

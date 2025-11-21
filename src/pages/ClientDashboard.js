@@ -76,7 +76,7 @@ const ClientDashboard = () => {
       const allApplications = [];
       for (const jobId of jobIds) {
         try {
-          const response = await fetch(`http://localhost:5000/api/applications/${jobId}/applications`);
+          const response = await fetch(`https://primequillacademy.onrender.com/api/applications/${jobId}/applications`);
           if (response.ok) {
             const data = await response.json();
             allApplications.push(...data.applications);
@@ -156,7 +156,7 @@ const ClientDashboard = () => {
 
   const handleApplicationAction = async (applicationId, action) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/applications/${applicationId}/status`, {
+      const response = await fetch(`https://primequillacademy.onrender.com/api/applications/${applicationId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

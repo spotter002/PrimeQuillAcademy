@@ -47,7 +47,7 @@ const FreelancerDashboard = () => {
       try {
         setLoading(true);
         const [jobsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/jobs')
+          axios.get('https://primequillacademy.onrender.com/api/jobs')
         ]);
         
         const openJobs = jobsRes.data.jobs?.filter(job => job.status === 'open') || [];
@@ -55,7 +55,7 @@ const FreelancerDashboard = () => {
         
         // Fetch user's applications
         try {
-          const appsRes = await axios.get(`http://localhost:5000/api/applications/freelancer/${user.id}`);
+          const appsRes = await axios.get(`https://primequillacademy.onrender.com/api/applications/freelancer/${user.id}`);
           setApplications(appsRes.data.applications || []);
           
           // Calculate stats from applications
@@ -94,7 +94,7 @@ const FreelancerDashboard = () => {
 
   const onSubmitApplication = async (data) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/applications/${selectedJob._id}/apply`, {
+      const response = await axios.post(`https://primequillacademy.onrender.com/api/applications/${selectedJob._id}/apply`, {
         quoteAmount: parseFloat(data.quoteAmount),
         deliveryDays: parseInt(data.deliveryDays),
         coverLetter: data.coverLetter,
@@ -110,7 +110,7 @@ const FreelancerDashboard = () => {
         setShowApplicationModal(false);
         reset();
         // Refresh applications
-        const appsRes = await axios.get(`http://localhost:5000/api/applications/freelancer/${user.id}`);
+        const appsRes = await axios.get(`https://primequillacademy.onrender.com/api/applications/freelancer/${user.id}`);
         setApplications(appsRes.data.applications || []);
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Set base URL for axios
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://primequillacademy.onrender.com';
 
 // Add auth token to requests
 axios.interceptors.request.use((config) => {

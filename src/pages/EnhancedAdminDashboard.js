@@ -31,9 +31,9 @@ const EnhancedAdminDashboard = () => {
       try {
         setLoading(true);
         const [statsRes, usersRes, jobsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/analytics/admin'),
-          axios.get('http://localhost:5000/api/admin/users'),
-          axios.get('http://localhost:5000/api/jobs')
+          axios.get('https://primequillacademy.onrender.com/api/analytics/admin'),
+          axios.get('https://primequillacademy.onrender.com/api/admin/users'),
+          axios.get('https://primequillacademy.onrender.com/api/jobs')
         ]);
         
         setStats(statsRes.data);
