@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles, Shield, Check, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ModernAuth = () => {
@@ -10,9 +10,38 @@ const ModernAuth = () => {
   const [isLogin, setIsLogin] = useState(location.pathname === '/login');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [password, setPassword] = useState('');
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
   const { login, signup } = useAuth();
   const navigate = useNavigate();
+
+  const watchedPassword = watch('password', '');
+
+  useEffect(() => {
+    setPassword(watchedPassword || '');
+  }, [watchedPassword]);
+
+  const getPasswordStrength = (password) => {
+    if (!password) return { score: 0, label: '', color: '' };
+    
+    let score = 0;
+    const checks = {
+      length: password.length >= 8,
+      lowercase: /[a-z]/.test(password),
+      uppercase: /[A-Z]/.test(password),
+      number: /\d/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+    
+    score = Object.values(checks).filter(Boolean).length;
+    
+    if (score <= 2) return { score, label: 'Weak', color: 'bg-red-500', checks };
+    if (score <= 3) return { score, label: 'Fair', color: 'bg-yellow-500', checks };
+    if (score <= 4) return { score, label: 'Good', color: 'bg-blue-500', checks };
+    return { score, label: 'Strong', color: 'bg-green-500', checks };
+  };
+
+  const passwordStrength = getPasswordStrength(password);
 
   useEffect(() => {
     setIsLogin(location.pathname === '/login');
@@ -177,8 +206,8 @@ const ModernAuth = () => {
                         {...register('password', { 
                           required: 'Password is required',
                           minLength: {
-                            value: 6,
-                            message: 'Password must be at least 6 characters'
+                            value: 8,
+                            message: 'Password must be at least 8 characters'
                           }
                         })}
                         type={showPassword ? 'text' : 'password'}
@@ -195,6 +224,50 @@ const ModernAuth = () => {
                     </div>
                     {errors.password && (
                       <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                    )}
+                    
+                    {!isLogin && password && (
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Password strength:</span>
+                          <span className={`text-sm font-medium ${
+                            passwordStrength.label === 'Weak' ? 'text-red-600' :
+                            passwordStrength.label === 'Fair' ? 'text-yellow-600' :
+                            passwordStrength.label === 'Good' ? 'text-blue-600' :
+                            'text-green-600'
+                          }`}>
+                            {passwordStrength.label}
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className={`h-2 rounded-full transition-all duration-300 ${passwordStrength.color}`}
+                            style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                          ></div>
+                        </div>
+                        <div className="grid grid-cols-1 gap-1 text-xs">
+                          <div className={`flex items-center space-x-2 ${passwordStrength.checks?.length ? 'text-green-600' : 'text-gray-400'}`}>
+                            {passwordStrength.checks?.length ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                            <span>At least 8 characters</span>
+                          </div>
+                          <div className={`flex items-center space-x-2 ${passwordStrength.checks?.lowercase ? 'text-green-600' : 'text-gray-400'}`}>
+                            {passwordStrength.checks?.lowercase ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                            <span>Lowercase letter</span>
+                          </div>
+                          <div className={`flex items-center space-x-2 ${passwordStrength.checks?.uppercase ? 'text-green-600' : 'text-gray-400'}`}>
+                            {passwordStrength.checks?.uppercase ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                            <span>Uppercase letter</span>
+                          </div>
+                          <div className={`flex items-center space-x-2 ${passwordStrength.checks?.number ? 'text-green-600' : 'text-gray-400'}`}>
+                            {passwordStrength.checks?.number ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                            <span>Number</span>
+                          </div>
+                          <div className={`flex items-center space-x-2 ${passwordStrength.checks?.special ? 'text-green-600' : 'text-gray-400'}`}>
+                            {passwordStrength.checks?.special ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                            <span>Special character</span>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
 
